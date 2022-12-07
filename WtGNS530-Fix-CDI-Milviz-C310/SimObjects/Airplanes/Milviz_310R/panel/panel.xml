@@ -26,6 +26,7 @@
 
 	<Instrument>
 		<Name>AS530</Name>
+		<NewCDIBehavior>True</NewCDIBehavior>
 		<ComIndex>1</ComIndex>
 		<NavIndex>1</NavIndex>
 		<Electric>
@@ -35,6 +36,7 @@
 
 	<Instrument>
 		<Name>AS430</Name>
+		<NewCDIBehavior>True</NewCDIBehavior>
 		<ComIndex>2</ComIndex>
 		<NavIndex>2</NavIndex>
 		<Electric>

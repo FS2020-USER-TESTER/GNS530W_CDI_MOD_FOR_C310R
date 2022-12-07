@@ -373,12 +373,12 @@
 			<UseTemplate Name="ASOBO_GT_Update">
 				<FREQUENCY>3</FREQUENCY>
 				<UPDATE_CODE>
-					(L:C310_FAIL_LEFT_ENGINE, bool) ! if {
+					(L:C310_FAIL_LEFT_ENGINE, bool) ! if{
 						(A:GEAR CENTER POSITION, percent over 100) 1 &lt; (A:GEAR LEFT POSITION, percent over 100) 1 &lt; or (A:CONTACT POINT IS ON GROUND:10, bool) and if{
 							1 (&gt;L:C310_FAIL_LEFT_ENGINE, bool)
 						}
 					}
-					(L:C310_FAIL_RIGHT_ENGINE, bool) ! if {
+					(L:C310_FAIL_RIGHT_ENGINE, bool) ! if{
 						(A:GEAR CENTER POSITION, percent over 100) 1 &lt; (A:GEAR RIGHT POSITION, percent over 100) 1 &lt; or (A:CONTACT POINT IS ON GROUND:11, bool) and if{
 							1 (&gt;L:C310_FAIL_RIGHT_ENGINE, bool)
 						}
@@ -1776,6 +1776,20 @@
 							<ID>2</ID>
 							<ANIM_NAME_FLAG_TO>INSTRUMENT_CDI_Flag_From_2</ANIM_NAME_FLAG_TO>
 							<ANIM_NAME_FLAG_FROM>INSTRUMENT_CDI_Flag_To_2</ANIM_NAME_FLAG_FROM>
+							<GPS_DRIVES_NAV_SIMVAR>(L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
+						</UseTemplate>
+
+						<UseTemplate Name="ASOBO_INSTRUMENT_CDI_Loc_Glide_Needles_Template">
+							<ID>2</ID>
+							<GPS_DRIVES_NAV_SIMVAR>(L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
+						</UseTemplate>
+
+						<UseTemplate Name="ASOBO_AS530_Template">
+							<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />
+						</UseTemplate>
+
+						<UseTemplate Name="ASOBO_AS430_Template">
+							<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />
 						</UseTemplate>
 
 					<!-- Turn Coordinator -->
@@ -2043,25 +2057,41 @@
 						<Component ID="C310_NAV_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_NAV_1</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
-									<!-- via lvar -->
-										<ANIM_CODE>
+									<ANIM_CODE>
 										(L:TDSGTNXI_INSTALLED, bool) 1 == if{
 											(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{ 
-												(A:GPS DRIVES NAV1, bool) ! if{
+												(A:GPS DRIVES NAV1, Bool) ! if{
 													(>K:TOGGLE_GPS_DRIVES_NAV1)
 												}
-												(L:C310_FLAG_NAV,bool) 100 *
 											}
 										}
-										(A:HSI CDI NEEDLE VALID, Bool) 0 == if{
-											1 (>L:C310_FLAG_NAV,bool)
+										(L:C310_TAB_RADIO, bool) if{
+											(A:NAV HAS NAV:1, Bool) if{
+												0 
+											} els{
+												100
+											}
+										} els{
+											#GPS_DRIVES_NAV_SIMVAR# if{
+												(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+													0 
+												} els{
+													100
+												}
+											} els{
+												(A:NAV HAS NAV:1, Bool) if{
+													0 
+												} els{
+													100
+												}
+											}
 										}
-										(L:C310_FLAG_NAV,bool) 100 *
-										</ANIM_CODE> 
+									</ANIM_CODE> 
 									<ANIM_LAG>600</ANIM_LAG>
 								</UseTemplate>
 							</Component>
@@ -2070,31 +2100,35 @@
 						<Component ID="C310_CDI_NEEDLE">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Needle_CourseDeviationBar_1</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
 									<ANIM_CODE>
 										(A:AVIONICS MASTER SWITCH,bool) if{   
-											(L:C310_SW_NAV_SOURCE,bool) 1 == if{
-												(A:GPS DRIVES NAV1, Bool) if{
+											(L:C310_TAB_RADIO, Bool) if{
+												(A:NAV HAS NAV:1,bool) 1 if{ 
+													0 (A:NAV CDI:1, Number) - 127 +
+												} els{ 127 }
+											}
+											els{
+												#GPS_DRIVES_NAV_SIMVAR# if{
 													(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{
 														190
 													} els{
-														0 (A:GPS WP CROSS TRK, nautical mile) - 127 * 127 +
+														(A:HSI CDI NEEDLE VALID, Bool) if{
+															0 (A:HSI CDI NEEDLE, Number) - 127 +
+														} els{ 127 }
 													}
 												} els{
-													(A:NAV HAS NAV:1,bool) 1 if{ 
+													(A:NAV HAS NAV:1,bool) if{ 
 														0 (A:NAV CDI:1, Number) - 127 +
-													}
-												}
-											} els{
-												(A:NAV HAS NAV:2,bool) 1 if{ 
-													0 (A:NAV CDI:2, Number) - 127 +
+													} els{ 127 }
 												}
 											}
 										} els{
-											0
+											127
 										}
 									</ANIM_CODE> 
 									<ANIM_LENGTH>254</ANIM_LENGTH>
@@ -2105,12 +2139,38 @@
 						<Component ID="C310_NAV_GS_RETRACT">
 							<Parameters Type="Default">
 								<NODE_ID>GSI_Helper</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
-									<!-- via lvar -->
-										<ANIM_CODE>(L:C310_FLAG_NAV_GS,bool) 100 *</ANIM_CODE> 
+									<ANIM_CODE>
+									(A:AVIONICS MASTER SWITCH,bool) if{   
+										(L:C310_TAB_RADIO, Bool) if{
+											(A:NAV HAS GLIDE SLOPE:1, Bool) if{
+													0
+												} els{
+													100
+												}
+										} els{
+											#GPS_DRIVES_NAV_SIMVAR# if{
+												(A:GPS HAS GLIDEPATH, Bool) if{
+														0
+													} els{
+														100
+													}
+											} els{
+												(A:NAV HAS GLIDE SLOPE:1, Bool) if{
+														0
+												} els{
+														100
+												}
+											}
+										}
+									} els{
+										100
+									}
+									</ANIM_CODE>
 									<ANIM_LAG>600</ANIM_LAG>
 								</UseTemplate>
 							</Component>
@@ -2119,47 +2179,43 @@
 						<Component ID="C310_GS_INDICATOR">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Needle_GlideSlopePointer_1</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
 									<ANIM_CODE>
-										-1 (>L:C310_GSI_NAV_NEEDLE,number)
-                    					(A:GPS DRIVES NAV1, bool) 1 == if{
+									(L:C310_TAB_RADIO, Bool) if{
+												(A:NAV HAS GLIDE SLOPE:1,bool) if{
+													(A:NAV GSI:1, Number) 119 + 
+												} els{ 0 }
+									} els{
+                    					#GPS_DRIVES_NAV_SIMVAR# if{
 											(L:TDSGTNXI_INSTALLED, bool) 1 == if{
 												(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{ 
-													63.5 (>L:C310_GSI_NAV_NEEDLE,number)
+													63.5 
 												} els{
 													(L:TDSGTNXI_GlidePathValueActive, bool) 1 == if{ 
-														(L:TDSGTNXI_GlidePathValueAngle, number) 127 * 127 + (>L:C310_GSI_NAV_NEEDLE,number)
-													}	
+														(L:TDSGTNXI_GlidePathValueAngle, number) 127 * 127 + 
+													} els{ 0 }	
 												}
-											}
-											(L:PMS50_GTN750_RUNNING,bool) 1 == if{
-												(L:PMS50_GTN750_HIDDEN, bool) 0 == (L:GTN750_HSI_GSI_NEEDLE_VALID,bool) 1 == and if{
-													(L:GTN750_HSI_GSI_NEEDLE,number) (>L:C310_GSI_NAV_NEEDLE,number)
+											} els{
+												(L:PMS50_GTN750_RUNNING,bool) 1 == if{
+														(L:PMS50_GTN750_HIDDEN, bool) 0 == (L:GTN750_HSI_GSI_NEEDLE_VALID,bool) 1 == and if{
+															(L:GTN750_HSI_GSI_NEEDLE,number) 
+														} els{ 0 }
 												} els{
-													(A:HSI GSI NEEDLE VALID,bool) 1 == if{
-														(A:HSI GSI NEEDLE,number) (>L:C310_GSI_NAV_NEEDLE,number)
-													}
+														(A:HSI GSI NEEDLE VALID,bool) 1 == if{
+															(A:HSI GSI NEEDLE,number) 119 +
+														} els{ 0 }
 												}
 											}
 										} els{
-											(A:AVIONICS MASTER SWITCH,bool) if{   
-												(L:C310_SW_NAV_SOURCE,bool) 1 == if{
-													(A:NAV HAS GLIDE SLOPE:1,bool) if{
-														(A:NAV GSI:1, Number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
-													}
-												} els{
-													(A:NAV HAS GLIDE SLOPE:2,bool) if{
-														(A:NAV GSI:2, Number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
-													} els{
-														0 (>L:C310_GSI_NAV_NEEDLE,number)
-													}
-												}
-											}
+											(A:NAV HAS GLIDE SLOPE:1,bool) if{
+												(A:NAV GSI:1, Number) 119 + 
+											} els{ 0 }
         								}
-										(L:C310_GSI_NAV_NEEDLE,number)
+									}
 									</ANIM_CODE> 
 									<ANIM_LENGTH>254</ANIM_LENGTH>
 								</UseTemplate>
@@ -2169,18 +2225,32 @@
 						<Component ID="C310_NAV_TO_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_To_1</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
 									<VISIBILITY_CODE>
-										(L:TDSGTNXI_INSTALLED, bool) 1 == (A:GPS DRIVES NAV1, bool) and if{ 
-										(L:TDSGTNXI_ToFromFlag,Enum) 1 ==  
-										(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == or }
-										els{ (L:C310_SW_NAV_SOURCE,bool) if{
-											(A:NAV TOFROM:1, Enum) 1 == (A:CIRCUIT AVIONICS ON, Bool) and }
-											els{
-											(A:NAV TOFROM:2, Enum) 1 == (A:CIRCUIT AVIONICS ON, Bool) and }
+									(A:CIRCUIT AVIONICS ON, Bool) if{
+										(L:C310_TAB_RADIO, Bool) if{
+											(A:NAV TOFROM:1, Enum) 1 ==
 										}
+										els{
+											#GPS_DRIVES_NAV_SIMVAR# if{
+												(L:TDSGTNXI_INSTALLED, bool) 1 == if{ 
+													(L:TDSGTNXI_ToFromFlag,Enum) 1 == (L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == or 
+												}
+												els{
+													(A:NAV TOFROM:1, Enum) 1 ==
+												}
+											}
+											els{
+												(A:NAV TOFROM:1, Enum) 1 ==  
+											}
+										}
+									}
+									els{
+										0
+									}
 									</VISIBILITY_CODE>
 								</UseTemplate>
 							</Component>
@@ -2189,16 +2259,31 @@
 						<Component ID="C310_NAV_FROM_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_From_1</NODE_ID>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
 									<VISIBILITY_CODE>
-									(L:TDSGTNXI_INSTALLED, bool) 1 == (A:GPS DRIVES NAV1, bool) and if{ 
-									(L:TDSGTNXI_ToFromFlag,Enum) 2 == }
-									els{ (L:C310_SW_NAV_SOURCE,bool) if{
-										(A:NAV TOFROM:1, Enum) 2 == (A:CIRCUIT AVIONICS ON, Bool) and }
-										 els{
-										(A:NAV TOFROM:2, Enum) 2 == (A:CIRCUIT AVIONICS ON, Bool) and }
+									(A:CIRCUIT AVIONICS ON, Bool) if{
+										(L:C310_TAB_RADIO, Bool) if{
+											(A:NAV TOFROM:1, Enum) 2 ==
+										}
+										els{
+											#GPS_DRIVES_NAV_SIMVAR# if{
+												(L:TDSGTNXI_INSTALLED, bool) 2 == if{ 
+													(L:TDSGTNXI_ToFromFlag,Enum) 1 == (L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == or 
+												}
+												els{
+													(A:NAV TOFROM:1, Enum) 2 ==
+												}
+											}
+											els{
+												(A:NAV TOFROM:1, Enum) 2 ==  
+											}
+										}
+									}
+									els{
+										0
 									}
 									</VISIBILITY_CODE>
 								</UseTemplate>
@@ -2237,13 +2322,6 @@
 								<ANIM_CODE>(L:C310_SW_NAV_SELECTOR,bool) 100 *</ANIM_CODE>
 								<LEFT_SINGLE_CODE>
 									(L:C310_SW_NAV_SELECTOR,bool) ! (>L:C310_SW_NAV_SELECTOR,bool)
-									<!--
-									(A:GPS DRIVES NAV1, Bool) 0 == if{
-										(L:C310_SW_NAV_SELECTOR,bool) (>L:C310_SW_NAV_SOURCE,bool)
-									} els{
-										1 (>L:C310_SW_NAV_SOURCE,bool)
-									}
-									-->
 								</LEFT_SINGLE_CODE>
 							</UseTemplate>
 						</Component>
