@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "path": "ContentInfo/milviz-cessna310/Thumbnail.JPG",
+      "size": 20052,
+      "date": 132967275697665748
+    },
+    {
+      "path": "SimObjects/Airplanes/Milviz_310R/systems.cfg",
+      "size": 3189,
+      "date": 133121182379694268
+    },
+    {
+      "path": "SimObjects/Airplanes/Milviz_310R/panel/panel.xml",
+      "size": 3189,
+      "date": 133121182379694268
+    },
+    {
+      "path": "SimObjects/Airplanes/Milviz_310R/model/MV310_Interior.xml",
+      "size": 3189,
+      "date": 133121182379694268
+    }
+  ]
+}
