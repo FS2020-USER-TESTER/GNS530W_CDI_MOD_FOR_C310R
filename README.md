@@ -25,11 +25,12 @@ All aircraft config changes recommended by WT are included.
 
 ## Usable with both GNS530 mods:
 
-1. The primary target of this add-on mode is the WT GNS530W mod installed from marketplace.
+1. The primary target of this add-on mode is the WT GNS530W mod installed from marketplace or AAU1.
 2. The mod from pms50.com can also be used and split CDI should be functional. 
 
 ## What about the GTN750 mods:
 
-1. This mod includes recomended changes to allow hot-swap using EFB tablet. Specifically the GNS530/GNS430 are disabled when hidden.
-2. The hot-swap feature remains a work-in progress. Consult the GTN750 provider discords for latest information on using GTN750 on the C310R.
+1. This mod includes latest recomended variable settings to correctly allow GPS selection using EFB tablet. When either GTN750 mod is present but not selected it is disabled.
+2. The GPS selection in tablet should be made on the ground before programming GPS.  Switching selected GPS in the air is not recomended.
+2. The hot-swap feature remains a work-in progress. Consult your GTN750 provider's discord for latest information on using GTN750 with the C310R.
 3. The split CDI behavior is not available in GTN750 mods at this time.

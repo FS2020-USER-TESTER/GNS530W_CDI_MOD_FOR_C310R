@@ -8525,6 +8525,7 @@
                             (L:C310_TAB_530, bool) if{
                                 1 (&gt;L:GTN750_INT_HIDDEN,bool)
                                 1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+								1 (&gt;L:TDSGTNXI_InactiveVar, number)
 								0 (&gt;L:AS530_HIDDEN,bool)
 								0 (&gt;L:AS430_HIDDEN,bool)
 								0 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
@@ -8533,6 +8534,7 @@
 								(L:C310_TAB_RADIO, Bool) if{
 									1 (&gt;L:GTN750_INT_HIDDEN,bool)
 									1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+									1 (&gt;L:TDSGTNXI_InactiveVar, number)
                                 	1 (&gt;L:AS530_HIDDEN,bool)
                                 	1 (&gt;L:AS430_HIDDEN,bool)
 									1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
@@ -8543,6 +8545,7 @@
 						(L:C310_TAB_TDS,bool) 1 == if{
 							1 (&gt;L:GTN750_INT_HIDDEN,bool)
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+							0 (&gt;L:TDSGTNXI_InactiveVar, number)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
 							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
