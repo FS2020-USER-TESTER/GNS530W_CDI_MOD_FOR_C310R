@@ -7,17 +7,17 @@
     },
     {
       "path": "SimObjects/Airplanes/Milviz_310R/systems.cfg",
-      "size": 3189,
+      "size": 26594,
       "date": 133121182379694268
     },
     {
       "path": "SimObjects/Airplanes/Milviz_310R/panel/panel.xml",
-      "size": 3189,
+      "size": 1280,
       "date": 133121182379694268
     },
     {
       "path": "SimObjects/Airplanes/Milviz_310R/model/MV310_Interior.xml",
-      "size": 3189,
+      "size": 351654,
       "date": 133121182379694268
     }
   ]

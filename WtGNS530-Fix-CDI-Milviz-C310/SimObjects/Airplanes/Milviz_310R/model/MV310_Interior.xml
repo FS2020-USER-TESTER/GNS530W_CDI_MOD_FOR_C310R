@@ -1776,20 +1776,52 @@
 							<ID>2</ID>
 							<ANIM_NAME_FLAG_TO>INSTRUMENT_CDI_Flag_From_2</ANIM_NAME_FLAG_TO>
 							<ANIM_NAME_FLAG_FROM>INSTRUMENT_CDI_Flag_To_2</ANIM_NAME_FLAG_FROM>
-							<GPS_DRIVES_NAV_SIMVAR>(L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
+							<GPS_DRIVES_NAV_SIMVAR>(L:C310_TAB_RADIO, bool) if{ 0 } els{ (L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? }</GPS_DRIVES_NAV_SIMVAR>
+							<FLAG_GLIDE_CODE> 
+								(L:C310_TAB_RADIO, bool) if{ (A:NAV HAS GLIDE SLOPE:2, Bool) } 
+								els{ (L:C310_TAB_530, bool) 
+							    if{ (A:GPS HAS GLIDEPATH, bool) (A:NAV HAS GLIDE SLOPE:2, Bool) (L:AS430_CDI_Source_1, Bool) ? } 
+								els{ (A:NAV HAS GLIDE SLOPE:2, Bool) } } 
+							</FLAG_GLIDE_CODE>
+							<FLAG_TO_CODE>
+								0 sp0
+								(A:AVIONICS MASTER SWITCH,bool) if{   
+									(A:NAV TOFROM:2, Enum) 1 == if{ 1 sp0 }
+									(L:C310_TAB_RADIO, bool) 1 != if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
+											0 sp0
+											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
+												s1 180 &gt; if{ 360 l1 - abs sp1 }
+												l1 90 &lt; if{ 1 sp0 }
+											}
+										}
+									}
+								}
+								l0
+							</FLAG_TO_CODE>
+							<FLAG_FROM_CODE>
+								0 sp0
+								(A:AVIONICS MASTER SWITCH,bool) if{   
+									(A:NAV TOFROM:2, Enum) 2 == if{ 1 sp0 }
+									(L:C310_TAB_RADIO, bool) 1 != if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
+											0 sp0
+											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
+												s1 180 &gt; if{ 360 l1 - abs sp1 }
+												l1 90 &gt;= if{ 1 sp0 }
+											}
+										}
+									}
+								}
+								l0
+							</FLAG_FROM_CODE>
 						</UseTemplate>
 
 						<UseTemplate Name="ASOBO_INSTRUMENT_CDI_Loc_Glide_Needles_Template">
 							<ID>2</ID>
-							<GPS_DRIVES_NAV_SIMVAR>(L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
-						</UseTemplate>
-
-						<UseTemplate Name="ASOBO_AS530_Template">
-							<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />
-						</UseTemplate>
-
-						<UseTemplate Name="ASOBO_AS430_Template">
-							<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />
+							<GPS_DRIVES_NAV_SIMVAR>(L:C310_TAB_RADIO, bool) if{ 0 } els{ (L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? }</GPS_DRIVES_NAV_SIMVAR>
 						</UseTemplate>
 
 					<!-- Turn Coordinator -->
@@ -2108,7 +2140,7 @@
 									<ANIM_CODE>
 										(A:AVIONICS MASTER SWITCH,bool) if{   
 											(L:C310_TAB_RADIO, Bool) if{
-												(A:NAV HAS NAV:1,bool) 1 if{ 
+												(A:NAV HAS NAV:1,bool)  if{ 
 													0 (A:NAV CDI:1, Number) - 127 +
 												} els{ 127 }
 											}
@@ -2154,7 +2186,7 @@
 												}
 										} els{
 											#GPS_DRIVES_NAV_SIMVAR# if{
-												(A:GPS HAS GLIDEPATH, Bool) if{
+												(A:GPS HAS GLIDEPATH, Bool) (A:HSI GSI NEEDLE VALID,bool) and if{
 														0
 													} els{
 														100
@@ -2185,43 +2217,37 @@
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
 									<ANIM_CODE>
+									0 sp0
 									(L:C310_TAB_RADIO, Bool) if{
 												(A:NAV HAS GLIDE SLOPE:1,bool) if{
-													(A:NAV GSI:1, Number) 119 + 
-												} els{ 0 }
+													(A:NAV GSI:1, Number) 119 + sp0
+												} 
 									} els{
                     					#GPS_DRIVES_NAV_SIMVAR# if{
 											(L:TDSGTNXI_INSTALLED, bool) 1 == if{
 												(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{ 
-													63.5 
+													63.5 sp0
 												} els{
 													(L:TDSGTNXI_GlidePathValueActive, bool) 1 == if{ 
-														(L:TDSGTNXI_GlidePathValueAngle, number) 127 * 127 + 
-													} els{ 0 }	
+														(L:TDSGTNXI_GlidePathValueAngle, number) 127 * 127 + sp0
+													} 	
 												}
 											} els{
-												(L:PMS50_GTN750_RUNNING,bool) 1 == if{
-														(L:PMS50_GTN750_HIDDEN, bool) 0 == (L:GTN750_HSI_GSI_NEEDLE_VALID,bool) 1 == and if{
-															(L:GTN750_HSI_GSI_NEEDLE,number) 
-														} els{ 0 }
-												} els{
-														(A:HSI GSI NEEDLE VALID,bool) 1 == if{
-															(A:HSI GSI NEEDLE,number) 119 +
-														} els{ 0 }
-												}
+													(A:HSI GSI NEEDLE VALID,bool) 1 == if{
+															(A:HSI GSI NEEDLE,number) 119 + sp0
 											}
 										} els{
 											(A:NAV HAS GLIDE SLOPE:1,bool) if{
-												(A:NAV GSI:1, Number) 119 + 
-											} els{ 0 }
+												(A:NAV GSI:1, Number) 119 + sp0
+											} 
         								}
 									}
+									l0
 									</ANIM_CODE> 
 									<ANIM_LENGTH>254</ANIM_LENGTH>
 								</UseTemplate>
 							</Component>
 						</Component>
-
 						<Component ID="C310_NAV_TO_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_To_1</NODE_ID>
@@ -2229,29 +2255,23 @@
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
-									<VISIBILITY_CODE>
-									(A:CIRCUIT AVIONICS ON, Bool) if{
-										(L:C310_TAB_RADIO, Bool) if{
-											(A:NAV TOFROM:1, Enum) 1 ==
-										}
-										els{
-											#GPS_DRIVES_NAV_SIMVAR# if{
-												(L:TDSGTNXI_INSTALLED, bool) 1 == if{ 
-													(L:TDSGTNXI_ToFromFlag,Enum) 1 == (L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == or 
-												}
-												els{
-													(A:NAV TOFROM:1, Enum) 1 ==
-												}
-											}
-											els{
-												(A:NAV TOFROM:1, Enum) 1 ==  
+								<VISIBILITY_CODE>
+								0 sp0
+								(A:AVIONICS MASTER SWITCH,bool) if{   
+									(A:NAV TOFROM:1, Enum) 1 == if{ 1 sp0 }
+									(L:C310_TAB_RADIO, bool) 1 !=  if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
+											0 sp0
+											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
+												s1 180 &gt; if{ 360 l1 - abs sp1 }
+												l1 90 &lt; if{ 1 sp0 }
 											}
 										}
 									}
-									els{
-										0
-									}
-									</VISIBILITY_CODE>
+								}
+								l0 100 *
+								</VISIBILITY_CODE>
 								</UseTemplate>
 							</Component>
 						</Component>
@@ -2263,32 +2283,27 @@
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
-									<VISIBILITY_CODE>
-									(A:CIRCUIT AVIONICS ON, Bool) if{
-										(L:C310_TAB_RADIO, Bool) if{
-											(A:NAV TOFROM:1, Enum) 2 ==
-										}
-										els{
-											#GPS_DRIVES_NAV_SIMVAR# if{
-												(L:TDSGTNXI_INSTALLED, bool) 2 == if{ 
-													(L:TDSGTNXI_ToFromFlag,Enum) 1 == (L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == or 
-												}
-												els{
-													(A:NAV TOFROM:1, Enum) 2 ==
-												}
-											}
-											els{
-												(A:NAV TOFROM:1, Enum) 2 ==  
+								<VISIBILITY_CODE>
+								0 sp0
+								(A:AVIONICS MASTER SWITCH,bool) if{   
+									(A:NAV TOFROM:1, Enum) 2 == if{ 1 sp0 }
+									(L:C310_TAB_RADIO, bool) 1 != if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
+											0 sp0
+											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
+												s1 180 &gt; if{ 360 l1 - abs sp1 }
+												l1 90 &gt;= if{ 1 sp0 }
 											}
 										}
 									}
-									els{
-										0
-									}
-									</VISIBILITY_CODE>
+								}
+								l0 100 *
+								</VISIBILITY_CODE>
 								</UseTemplate>
 							</Component>
 						</Component>
+
 
 					
 					<!-- Nav Selector Switch (on panel) -->
@@ -7981,6 +7996,7 @@
 		<Component ID="AS530">
 			<UseTemplate Name="ASOBO_AS530_Template">
 				<ID>1</ID>
+				<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />				
 				<POTENTIOMETER>5</POTENTIOMETER>
 				<DIMMING_FACTOR>0.5</DIMMING_FACTOR>
 				<FAILURE>(A:CIRCUIT ON:26, Bool)</FAILURE>
@@ -7992,6 +8008,7 @@
 
 		<Component ID="AS430">
 			<UseTemplate Name="ASOBO_AS430_Template">
+				<EXTERNAL_AUTOPILOT_BEHAVIOR_CONTROL />			
 				<POTENTIOMETER>5</POTENTIOMETER>
 				<DIMMING_FACTOR>0.5</DIMMING_FACTOR>
 				<FAILURE>(A:CIRCUIT ON:27, Bool)</FAILURE>
@@ -8502,17 +8519,25 @@
 							0 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
+							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
+							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
 						} els{
                             (L:C310_TAB_530, bool) if{
                                 1 (&gt;L:GTN750_INT_HIDDEN,bool)
                                 1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 								0 (&gt;L:AS530_HIDDEN,bool)
 								0 (&gt;L:AS430_HIDDEN,bool)
+								0 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
+								0 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
 							} els{
-								1 (&gt;L:GTN750_INT_HIDDEN,bool)
-								1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
-                                1 (&gt;L:AS530_HIDDEN,bool)
-                                1 (&gt;L:AS430_HIDDEN,bool)
+								(L:C310_TAB_RADIO, Bool) if{
+									1 (&gt;L:GTN750_INT_HIDDEN,bool)
+									1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+                                	1 (&gt;L:AS530_HIDDEN,bool)
+                                	1 (&gt;L:AS430_HIDDEN,bool)
+									1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
+									1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)	
+								}						
 							}
 						}
 						(L:C310_TAB_TDS,bool) 1 == if{
@@ -8520,6 +8545,8 @@
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
+							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
+							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
 						}
 					</UPDATE_CODE>
 				</UseTemplate>
