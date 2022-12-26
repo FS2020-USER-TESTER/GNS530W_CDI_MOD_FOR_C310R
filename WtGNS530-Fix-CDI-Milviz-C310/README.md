@@ -8,6 +8,13 @@ All aircraft config changes recommended by WT are included.
 1. Unzip WtGNS530-Fix-CDI-Milviz-C310.zip placing WtGNS530-Fix-CDI-Milviz-C310 into community folder
 2. This mod is only functional while flying the Blackbird C310R.
 
+## Support
+
+You may report issues or ask questions here: https://github.com/FS2020-USER-TESTER/GNS530W_CDI_MOD_FOR_C310R/issues
+Updates will be posted here when submitted: https://github.com/FS2020-USER-TESTER/GNS530W_CDI_MOD_FOR_C310R/releases
+This mod is not supported by Blackbird. 
+
+
 ## Using External Controls for GNS530:
 
 1. Users that map GNS530/430 to external buttons need to assign the CDI button to a script. Here are suggested scripts:
