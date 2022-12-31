@@ -2149,8 +2149,8 @@
 													(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{
 														190
 													} els{
-														(A:HSI CDI NEEDLE VALID, Bool) if{
-															0 (A:HSI CDI NEEDLE, Number) - 127 +
+														(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
+															0 (A:GPS CDI NEEDLE, Number) - 127 +
 														} els{ 127 }
 													}
 												} els{
@@ -2186,7 +2186,7 @@
 												}
 										} els{
 											#GPS_DRIVES_NAV_SIMVAR# if{
-												(A:GPS HAS GLIDEPATH, Bool) (A:HSI GSI NEEDLE VALID,bool) and if{
+												(A:GPS HAS GLIDEPATH, Bool) if{
 														0
 													} els{
 														100
@@ -2233,8 +2233,8 @@
 													} 	
 												}
 											} els{
-													(A:HSI GSI NEEDLE VALID,bool) 1 == if{
-															(A:HSI GSI NEEDLE,number) 119 + sp0
+													(A:GPS HAS GLIDEPATH,bool) if{
+															(A:GPS GSI NEEDLE,number) 119 + sp0
 											}
 										} els{
 											(A:NAV HAS GLIDE SLOPE:1,bool) if{

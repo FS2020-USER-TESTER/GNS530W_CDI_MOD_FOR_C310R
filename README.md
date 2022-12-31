@@ -1,7 +1,10 @@
-# GNS530W_CDI_MOD_FOR_C310R
-This mod changes the Blackbird C310R to improve compatibility with WT provided GNS530W including split CDI.
-All aircraft config changes recommended by WT are included.
+# GNS530W_CDI_MOD_FOR_C310R VERSION 1.0.1
 
+This mod patches the Blackbird C310R to improve compatibility with early release WT GNS530W including split CDI.
+The GNS530W is currently available optionally in Marketplace but will become the standard GPS implementation in 2023.
+All aircraft config changes recommended by WT document are included.
+
+This mod is not supported by Blackbird. 
 
 ## Install
 
@@ -11,9 +14,6 @@ All aircraft config changes recommended by WT are included.
 ## Support
 
 You may report issues or ask questions here: https://github.com/FS2020-USER-TESTER/GNS530W_CDI_MOD_FOR_C310R/issues
-Updates will be posted here when submitted: https://github.com/FS2020-USER-TESTER/GNS530W_CDI_MOD_FOR_C310R/releases
-This mod is not supported by Blackbird. 
-
 
 ## Using External Controls for GNS530:
 
@@ -25,10 +25,11 @@ This mod is not supported by Blackbird.
 ## Features provided by the mod:
 
 1. There is a GNS530 and a GNS430 available in the C310R. With this mod the units can be in unmatched CDI states - one in VLOC and one in GPS
-2. The HSI behavior code has been tweaked to use latest simvars and to fix indicator flag issues.
-3. The TO/FROM flag for HSI and OBS are correctly calculated in GPS operation.
+2. The HSI and NAV2 CDI behavior code has been improved to use latest simvars and to provide correct indicator flags.
+3. The TO/FROM flag for HSI and CDI are correctly calculated in GPS operation.
 4. When in Dual Radio mode the state of the hidden GPS units is ignored when calculating HSI/OBS indicators.
 5. The latest core fix for autopilot startup PID reset is enabled. This can provide smoother autopilot startup. It is suggested that pilot trim the aircraft before engaging the AP for smoothest transition.
+6. Enable control of GNS750 is provided removing issues with used with GNT530W.
 
 ## Usable with both GNS530 mods:
 
