@@ -2217,32 +2217,24 @@
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
 									<ANIM_NAME>#NODE_ID#</ANIM_NAME>
 									<ANIM_CODE>
-									0 sp0
+									-1 (>L:C310_GSI_NAV_NEEDLE,number)
 									(L:C310_TAB_RADIO, Bool) if{
 												(A:NAV HAS GLIDE SLOPE:1,bool) if{
-													(A:NAV GSI:1, Number) 119 + sp0
+													(A:NAV GSI:1, Number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
 												} 
 									} els{
-                    					#GPS_DRIVES_NAV_SIMVAR# if{
-											(L:TDSGTNXI_INSTALLED, bool) 1 == if{
-												(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{ 
-													63.5 sp0
-												} els{
-													(L:TDSGTNXI_GlidePathValueActive, bool) 1 == if{ 
-														(L:TDSGTNXI_GlidePathValueAngle, number) 127 * 127 + sp0
-													} 	
-												}
-											} els{
-													(A:GPS HAS GLIDEPATH,bool) if{
-															(A:GPS GSI NEEDLE,number) 119 + sp0
+										#GPS_DRIVES_NAV_SIMVAR# if{
+											(A:GPS HAS GLIDEPATH,bool) if{
+												(A:GPS GSI NEEDLE,number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
 											}
-										} els{
+										}	
+										els{
 											(A:NAV HAS GLIDE SLOPE:1,bool) if{
-												(A:NAV GSI:1, Number) 119 + sp0
-											} 
-        								}
+												(A:NAV GSI:1, Number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
+											}
+										}
 									}
-									l0
+									(L:C310_GSI_NAV_NEEDLE,number)
 									</ANIM_CODE> 
 									<ANIM_LENGTH>254</ANIM_LENGTH>
 								</UseTemplate>
