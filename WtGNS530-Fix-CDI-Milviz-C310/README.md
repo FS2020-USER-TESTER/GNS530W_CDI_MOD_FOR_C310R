@@ -1,4 +1,4 @@
-# GNS530W_CDI_MOD_FOR_C310R VERSION 1.0.1
+# GNS530W_CDI_MOD_FOR_C310R VERSION 1.0.3
 
 This mod patches the Blackbird C310R to improve compatibility with early release WT GNS530W including split CDI.
 The GNS530W is currently available optionally in Marketplace but will become the standard GPS implementation in 2023.
@@ -6,10 +6,17 @@ All aircraft config changes recommended by WT document are included.
 
 This mod is not supported by Blackbird. 
 
+# Change List
+
+Version 1.0.3 - Patch panel.cfg so GNS530 is chosen for pop-out
+              - Implemented User suggested change "controls_reactivity_scalar" for improved control sensitivity
+Version 1.0.2 - HSI GS indication improved
+
 ## Install
 
-1. Unzip WtGNS530-Fix-CDI-Milviz-C310.zip placing WtGNS530-Fix-CDI-Milviz-C310 into community folder
-2. This mod is only functional while flying the Blackbird C310R.
+1. Delete any earlier version from community
+2. Unzip WtGNS530-Fix-CDI-Milviz-C310.zip placing WtGNS530-Fix-CDI-Milviz-C310 into community folder
+3. This mod is only functional while flying the Blackbird C310R.
 
 ## Support
 
