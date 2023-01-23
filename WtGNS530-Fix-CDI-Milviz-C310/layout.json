@@ -11,8 +11,18 @@
       "date": 133121182379694268
     },
     {
+      "path": "SimObjects/Airplanes/Milviz_310R/flight_model.cfg",
+      "size": 13648,
+      "date": 133121182379694268
+    },
+    {
       "path": "SimObjects/Airplanes/Milviz_310R/panel/panel.xml",
       "size": 1280,
+      "date": 133121182379694268
+    },
+    {
+      "path": "SimObjects/Airplanes/Milviz_310R/panel/PANEL.CFG",
+      "size": 3598,
       "date": 133121182379694268
     },
     {
