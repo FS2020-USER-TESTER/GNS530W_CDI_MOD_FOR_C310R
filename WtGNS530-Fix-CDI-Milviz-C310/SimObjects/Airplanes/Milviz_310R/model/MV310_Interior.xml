@@ -2089,7 +2089,7 @@
 						<Component ID="C310_NAV_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_NAV_1</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim">
@@ -2132,7 +2132,7 @@
 						<Component ID="C310_CDI_NEEDLE">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Needle_CourseDeviationBar_1</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
@@ -2171,7 +2171,7 @@
 						<Component ID="C310_NAV_GS_RETRACT">
 							<Parameters Type="Default">
 								<NODE_ID>GSI_Helper</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim">
@@ -2211,7 +2211,7 @@
 						<Component ID="C310_GS_INDICATOR">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Needle_GlideSlopePointer_1</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Anim_Code">
@@ -2243,7 +2243,7 @@
 						<Component ID="C310_NAV_TO_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_To_1</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
@@ -2252,7 +2252,7 @@
 								(A:AVIONICS MASTER SWITCH,bool) if{   
 									(A:NAV TOFROM:1, Enum) 1 == if{ 1 sp0 }
 									(L:C310_TAB_RADIO, bool) 1 !=  if{
-										(A:GPS DRIVES NAV1, Bool) if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
 											0 sp0
 											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
 												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
@@ -2271,7 +2271,7 @@
 						<Component ID="C310_NAV_FROM_FLAG">
 							<Parameters Type="Default">
 								<NODE_ID>INSTRUMENT_Flag_From_1</NODE_ID>
-								<GPS_DRIVES_NAV_SIMVAR>(A:GPS DRIVES NAV1, Bool)</GPS_DRIVES_NAV_SIMVAR>
+								<GPS_DRIVES_NAV_SIMVAR>(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ?</GPS_DRIVES_NAV_SIMVAR>
 							</Parameters>
 							<Component ID="#NODE_ID#" Node="#NODE_ID#">
 								<UseTemplate Name="ASOBO_GT_Visibility_Code">
@@ -2280,7 +2280,7 @@
 								(A:AVIONICS MASTER SWITCH,bool) if{   
 									(A:NAV TOFROM:1, Enum) 2 == if{ 1 sp0 }
 									(L:C310_TAB_RADIO, bool) 1 != if{
-										(A:GPS DRIVES NAV1, Bool) if{
+										(L:AS530_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? if{
 											0 sp0
 											(A:GPS IS ACTIVE FLIGHT PLAN, Bool) if{
 												(A:GPS WP TRUE BEARING, Degrees) (A:GPS WP TRUE REQ HDG, Degrees) - abs
