@@ -8511,37 +8511,28 @@
 							0 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
-						} els{
-                            (L:C310_TAB_530, bool) if{
-                                1 (&gt;L:GTN750_INT_HIDDEN,bool)
-                                1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
-								1 (&gt;L:TDSGTNXI_InactiveVar, number)
-								0 (&gt;L:AS530_HIDDEN,bool)
-								0 (&gt;L:AS430_HIDDEN,bool)
-								0 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
-								0 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
-							} els{
-								(L:C310_TAB_RADIO, Bool) if{
-									1 (&gt;L:GTN750_INT_HIDDEN,bool)
-									1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
-									1 (&gt;L:TDSGTNXI_InactiveVar, number)
-                                	1 (&gt;L:AS530_HIDDEN,bool)
-                                	1 (&gt;L:AS430_HIDDEN,bool)
-									1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
-									1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)	
-								}						
-							}
+							1 (&gt;L:TDSGTNXI_InactiveVar, number)
 						}
-						(L:C310_TAB_TDS,bool) 1 == if{
+                        (L:C310_TAB_530, bool) if{
 							1 (&gt;L:GTN750_INT_HIDDEN,bool)
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
-							0 (&gt;L:TDSGTNXI_InactiveVar, number)
+							0 (&gt;L:AS530_HIDDEN,bool)
+							0 (&gt;L:AS430_HIDDEN,bool)
+							1 (&gt;L:TDSGTNXI_InactiveVar, number)
+						}
+						(L:C310_TAB_RADIO)	if{
+							1 (&gt;L:GTN750_INT_HIDDEN,bool)
+							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+                            1 (&gt;L:AS530_HIDDEN,bool)
+                            1 (&gt;L:AS430_HIDDEN,bool)
+							1 (&gt;L:TDSGTNXI_InactiveVar, number)
+						}
+						(L:C310_TAB_TDS,bool)  if{
+							1 (&gt;L:GTN750_INT_HIDDEN,bool)
+							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1)							
+							0 (&gt;L:TDSGTNXI_InactiveVar, number)
 						}
 					</UPDATE_CODE>
 				</UseTemplate>
