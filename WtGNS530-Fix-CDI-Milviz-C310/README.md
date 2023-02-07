@@ -1,4 +1,4 @@
-# GNS530W_CDI_MOD_FOR_C310R VERSION 1.0.4
+# GNS530W_CDI_MOD_FOR_C310R VERSION 1.0.5
 
 This mod patches the Blackbird C310R to improve compatibility with AAU1 release of WT GNS530W including providing split CDI.
 The WT GNS530W is now available as production release. 
@@ -10,7 +10,8 @@ This mod is not supported by Blackbird.
 
 # Change List
 
-Version 1.0.4 - Rework the disable variables to allow swith to TDS GTNXi
+Version 1.0.5 - Additional logic on the disable flags when switching GPS
+Version 1.0.4 - Rework the disable variables to allow swith to GTN750
                 Minor bug for NAV2 CDI switch
                 Choose the production WT GNS530 directly without the Beta mod in Marketplace installed
 Version 1.0.3 - Patch panel.cfg so GNS530 is chosen for pop-out
@@ -46,7 +47,7 @@ You may report issues or ask questions here: https://github.com/FS2020-USER-TEST
 
 ## PMS50 and TDS GTN750 mods:
 
-1. This mod includes latest recomended variable settings to correctly allow GPS selection using EFB tablet. When either GTN750 mod is present but not selected it is disabled.  However at this time if chosen in tablet, the PMS50 GTN750 is not able to receive clicks when WT GNS530 is present.  **If you want to use PMS50 version of GTN750 do not install this mod in community and instead use the 3 mods available from PMS50.com to load their WT version.**
+1. This mod includes latest recomended variable settings to correctly allow GPS selection using EFB tablet. When either GTN750 mod is present but not selected it is disabled.  Current version will allow switch to PMS50 GTN750 mod but only the non-WT configuration  **If you want to use PMS50 version of GTN750 do not install this mod in community and instead use the WT mod available from PMS50.com aircraft page in order to use their full-function WT version.**  The additional 'WT GNS530' patch is not needed with this C310R mod.
 2. If installed, the TDS GTNXi mod for GTN750 can be chosen in the C310R tablet. Testing has revealed no problems.
-3. The GPS selection in tablet should be made on the ground before programming GPS.  Switching selected GPS in the air is not recomended.
+3. The GPS selection in tablet should be made on the ground before programming GPS.  Switching selected GPS in the air is not recomended.  Also, recomend restart flight after making GPS change on the C310R tablet to make sure GPS is correctly initialized.
 
