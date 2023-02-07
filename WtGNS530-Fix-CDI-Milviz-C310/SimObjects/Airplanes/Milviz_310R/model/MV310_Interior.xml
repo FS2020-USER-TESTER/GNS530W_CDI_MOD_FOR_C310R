@@ -8499,7 +8499,6 @@
 				</Component>
 			</Component>			
 		</Component>
-gps has
 		<Component ID="Avionics_Viz_Logic">
 
 			<Component ID="UPDATE_Avionics_Logic">
