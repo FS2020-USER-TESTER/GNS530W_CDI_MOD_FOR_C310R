@@ -1778,10 +1778,18 @@
 							<ANIM_NAME_FLAG_FROM>INSTRUMENT_CDI_Flag_To_2</ANIM_NAME_FLAG_FROM>
 							<GPS_DRIVES_NAV_SIMVAR>(L:C310_TAB_RADIO, bool) if{ 0 } els{ (L:AS430_CDI_Source_1, Bool) (A:GPS DRIVES NAV1, Bool) (L:C310_TAB_530, bool) ? }</GPS_DRIVES_NAV_SIMVAR>
 							<FLAG_GLIDE_CODE> 
-								(L:C310_TAB_RADIO, bool) if{ (A:NAV HAS GLIDE SLOPE:2, Bool) } 
-								els{ (L:C310_TAB_530, bool) 
-							    if{ (A:GPS HAS GLIDEPATH, bool) (A:NAV HAS GLIDE SLOPE:2, Bool) (L:AS430_CDI_Source_1, Bool) ? } 
-								els{ (A:NAV HAS GLIDE SLOPE:2, Bool) } } 
+								(L:C310_TAB_RADIO, bool) if{ 
+									(A:NAV HAS GLIDE SLOPE:2, Bool) 
+								} 
+								(L:C310_TAB_530, bool) if{ 
+									(A:GPS HAS GLIDEPATH, bool) (A:NAV HAS GLIDE SLOPE:2, Bool) (L:AS430_CDI_Source_1, Bool) ? 
+								}
+								(L:C310_TAB_750, bool) if{
+									(L:GTN750_HSI_GSI_NEEDLE_VALID, bool)
+								}
+								(L:C310_TAB_TDS, bool) if{
+									(L:TDSGTNXI_GlidePathValueActive, bool)
+								}
 							</FLAG_GLIDE_CODE>
 							<FLAG_TO_CODE>
 								0 sp0
@@ -2186,16 +2194,25 @@
 												}
 										} els{
 											#GPS_DRIVES_NAV_SIMVAR# if{
-												(A:GPS HAS GLIDEPATH, Bool) if{
-														0
-													} els{
-														100
+												(L:C310_TAB_530, bool) if{
+													0 100 (A:GPS HAS GLIDEPATH, Bool) ?
+												}
+												(L:C310_TAB_750, bool) if{
+													0 100 (L:GTN750_HSI_GSI_NEEDLE_VALID, bool) ?
+												}
+												(L:C310_TAB_TDS, bool) if{
+													(L:TDSGTNXI_INSTALLED, bool) 1 == if{
+														(L:TDSGTNXI_InstrumentPanelSelfTest, bool)  if{
+															0
+														}
+														els{
+															0 100 (A:GPS HAS GLIDEPATH, bool) ?
+														}
 													}
+													els{ 100 }
+												}
 											} els{
-												(A:NAV HAS GLIDE SLOPE:1, Bool) if{
-														0
-												} els{
-														100
+													0 100 (A:NAV HAS GLIDE SLOPE:1, Bool) ?
 												}
 											}
 										}
@@ -2225,7 +2242,20 @@
 									} els{
 										#GPS_DRIVES_NAV_SIMVAR# if{
 											(A:GPS HAS GLIDEPATH,bool) if{
-												(A:GPS GSI NEEDLE,number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
+												(L:C310_TAB_530, bool) if{
+													(A:GPS GSI NEEDLE,number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
+												}  
+												(L:C310_TAB_750, bool) if{
+													(L:GTN750_HSI_GSI_NEEDLE, number) 119 + (>L:C310_GSI_NAV_NEEDLE,number)
+												}
+												(L:C310_TAB_TDS, bool) if{
+													(L:TDSGTNXI_InstrumentPanelSelfTest, bool) 1 == if{
+														190 (>L:C310_GSI_NAV_NEEDLE,number)
+													} 
+													els{
+														(A:GPS GSI NEEDLE, Number) 127 + (>L:C310_GSI_NAV_NEEDLE,number)
+													}
+												}
 											}
 										}	
 										els{
@@ -8505,46 +8535,44 @@
 				<UseTemplate Name="ASOBO_GT_Update">
 					<FREQUENCY>3</FREQUENCY>
 					<UPDATE_CODE>
-						(L:C310_TAB_RADIO)	if{
+						(L:C310_TAB_RADIO, bool)	if{
 							1 (&gt;L:GTN750_INT_HIDDEN,bool)
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
                             1 (&gt;L:AS530_HIDDEN,bool)
                             1 (&gt;L:AS430_HIDDEN,bool)
 							1 (&gt;L:TDSGTNXI_InactiveVar, number)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1, bool)
-							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1, bool)
-						 	(A:AUTOPILOT AVIONICS MANAGED, bool) if{ 1 (&gt;K:AP_AVIONICS_MANAGED_OFF) }
 						}
                         (L:C310_TAB_530, bool) if{
 							1 (&gt;L:GTN750_INT_HIDDEN,bool)
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+							1 (&gt;L:TDSGTNXI_InactiveVar, number)
+							1 (&gt;L:XMLVAR_GPS_DISABLED_GTN750, bool)
+						 	(A:AUTOPILOT AVIONICS MANAGED, bool) ! if{ 1 (&gt;K:AP_AVIONICS_MANAGED_ON) }
 							0 (&gt;L:AS530_HIDDEN,bool)
 							0 (&gt;L:AS430_HIDDEN,bool)
-							1 (&gt;L:TDSGTNXI_InactiveVar, number)
 							0 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1, bool)
 							0 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1, bool)
-							(A:AUTOPILOT AVIONICS MANAGED, bool) ! if{ 1 (&gt;K:AP_AVIONICS_MANAGED_ON) }
 						}
 						(L:C310_TAB_750, bool) if{				
-							0 (&gt;L:GTN750_INT_HIDDEN,bool)
-							0 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
 							1 (&gt;L:TDSGTNXI_InactiveVar, number)
 							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1, bool)
 							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1, bool)
-						 	(A:AUTOPILOT AVIONICS MANAGED, bool) if{ 1 (&gt;K:AP_AVIONICS_MANAGED_OFF) }
+							0 (&gt;L:GTN750_INT_HIDDEN,bool)
+							0 (&gt;L:GTN650_INT_2_HIDDEN,bool)
+							0 (&gt;L:XMLVAR_GPS_DISABLED_GTN750, bool)
 						}
 						(L:C310_TAB_TDS,bool)  if{
 							1 (&gt;L:GTN750_INT_HIDDEN,bool)
 							1 (&gt;L:GTN650_INT_2_HIDDEN,bool)
 							1 (&gt;L:AS530_HIDDEN,bool)
 							1 (&gt;L:AS430_HIDDEN,bool)
-							0 (&gt;L:TDSGTNXI_InactiveVar, number)
 							1 (&gt;L:XMLVAR_GPS_DISABLED_AS530_1, bool)
 							1 (&gt;L:XMLVAR_GPS_DISABLED_AS430_1, bool)
-						 	(A:AUTOPILOT AVIONICS MANAGED, bool) if{ 1 (&gt;K:AP_AVIONICS_MANAGED_OFF) }
-}
+							1 (&gt;L:XMLVAR_GPS_DISABLED_GTN750, bool)
+							0 (&gt;L:TDSGTNXI_InactiveVar, number)
+						}
 					</UPDATE_CODE>
 				</UseTemplate>
 			</Component>
